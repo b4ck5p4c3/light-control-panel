@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mqtt = require('mqtt')
 
-dotenv.config('.env.production');
 dotenv.config('.env');
 
 const app = express();
