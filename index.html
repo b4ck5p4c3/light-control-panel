@@ -1,0 +1,215 @@
+<html>
+
+<head>
+    <title>Light control</title>
+    <style>
+        * {
+            font-family: monospace;
+        }
+
+        .control-block {
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            width: fit-content;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .control-block-title {
+            width: 100%;
+            display: flex;
+            font-weight: bold;
+            border-bottom: 1px solid gray;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+
+        html, body, main {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #light-22 {
+            top: 25vh;
+            left: 25vw;
+        }
+        
+        #light-21 {
+            bottom: 25vh;
+            left: 25vw;
+        }
+        
+        #light-11 {
+            top: 25vh;
+            right: 25vw;
+        }
+        
+        #light-12 {
+            bottom: 25vh;
+            right: 25vw;
+        }
+
+        #traffic-big-red {
+            bottom: calc(5vh + 200px);
+            left: 5vw;
+        }
+        #traffic-big-yellow {
+            bottom: calc(5vh + 100px);
+            left: 5vw;
+        }
+        #traffic-big-green {
+            bottom: 5vh;
+            left: 5vw;
+        }
+
+        #red-alert-lamp {
+            bottom: 5vh;
+            left: calc(50vw - 100px);
+        }
+
+        #traffic-small-red {
+            top: 5vh;
+            left: calc(50vw - 200px);
+        }
+
+        #traffic-small-green {
+            top: 5vh;
+            left: 50vw;
+        }
+
+        #hack-light {
+            top: calc(50vh - 50px);
+            left: calc(50vw - 100px);
+        }
+
+        button {
+            width: 50px;
+        }
+
+        .control-block {
+            width: 200px;
+            height: 100px;
+        }
+
+        .title {
+            position: absolute;
+            font-weight: bold;
+            font-size: 30px;
+            top: 1vh;
+            left: 1vw;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const block of document.getElementsByClassName('control-block')) {
+                const id = block.id;
+                for (const button of block.getElementsByTagName('button')) {
+                    const value = button.dataset.value;
+                    button.addEventListener('click', () => {
+                        console.info(`sending ${value} to ${id}`);
+                        button.setAttribute('disabled', 'true');
+                        fetch('/update', {
+                            method: 'POST',
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id,
+                                value
+                            })
+                        }).then(() => {
+                        }).catch(e => {
+                            alert(`failed sending: ${e}`);
+                        }).finally(() => {
+                            button.removeAttribute('disabled');
+                        });
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <main>
+        <div class="title">
+            B4CKSP3CE light control panel
+        </div>
+        <div class="control-block" id="light-11">
+            <div class="control-block-title">Light 1-1</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="light-12">
+            <div class="control-block-title">Light 1-2</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="light-21">
+            <div class="control-block-title">Light 2-1</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="light-22">
+            <div class="control-block-title">Light 2-2</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+
+        
+        <div class="control-block" id="traffic-big-red">
+            <div class="control-block-title">Traffic big red</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+
+        <div class="control-block" id="hack-light">
+            <div class="control-block-title">Hack light</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="traffic-big-yellow">
+            <div class="control-block-title">Traffic big yellow</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="traffic-big-green">
+            <div class="control-block-title">Traffic big green</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+
+        
+        <div class="control-block" id="traffic-small-red">
+            <div class="control-block-title">Traffic small red</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="traffic-small-green">
+            <div class="control-block-title">Traffic small green</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+        
+        <div class="control-block" id="red-alert-lamp">
+            <div class="control-block-title">Red alert lamp</div>
+            <button data-value="1">On</button>
+            <button data-value="0">Off</button>
+        </div>
+    </main>
+</body>
+
+</html>
